@@ -10,7 +10,8 @@ class UserListRepoImpl(private val userListApi: UserListApi) : UserListRepo {
     override suspend fun getUserList(): ResourceState<MutableList<GitResponseModel>> {
         return userListApi.getGitUserList().mapToEntity {
             val modelList = mutableListOf<GitResponseModel>()
-            it.list.forEach {
+            val data = it.list ?: emptyList()
+            data.forEach {
                 modelList.add(
                     GitResponseModel(
                         it.first_name,

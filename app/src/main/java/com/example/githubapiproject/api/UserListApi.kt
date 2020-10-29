@@ -11,8 +11,7 @@ interface UserListApi {
 }
 
 data class ResponseData(
-    @Json(name = "data") val list: List<Data>
-
+    @Json(name = "data") val list: List<Data>?
 )
 
 data class Data(

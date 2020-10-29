@@ -6,16 +6,17 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 android {
-    compileSdkVersion 30
+    compileSdkVersion 28
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.example.githubapiproject"
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,6 +24,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
         }
     }
     compileOptions {
@@ -62,6 +69,40 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "com.squareup.okhttp3:logging-interceptor:3.12.12"
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+
+    //robolectric setup with espresso
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'androidx.test:core-ktx:1.2.0'
+    testImplementation 'androidx.test:rules:1.2.0'
+    testImplementation 'org.robolectric:robolectric:4.3'
+    testImplementation "androidx.test:runner:1.2.0"
+    testImplementation "androidx.test.ext:junit:1.1.1"
+    testImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'androidx.test.ext:truth:1.2.0'
+    testImplementation 'com.google.truth:truth:0.42'
+
+    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    implementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    testImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    testImplementation "io.mockk:mockk:1.9"
+
+    //coroutines
+    def coroutinesVersion = '1.2.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    //testing coroutines
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation 'com.jraska.livedata:testing-ktx:1.1.0'
 
 
+}
+
+configurations.all {
+    resolutionStrategy {
+        force group: 'androidx.test', name: 'monitor', version: '1.2.0'
+    }
 }
