@@ -26,13 +26,10 @@ class UserListRepoImplTest {
     @Test
     fun `getRepositoryList Returns Github Users Success Response`()= runBlocking {
 
-        //mock
         val mockResponse = mockk<Call<ResponseData>>()
         every { mockResponse.execute() } returns MockUtil.mockResultSuccess()
         every { userList.getGitUserList()} returns mockResponse
-        //given
         val userList=userListRepo.getUserList()
-        //assert
         Truth.assertThat(userList).isInstanceOf(ResourceState.Success::class.java)
         Truth.assertThat((userList as ResourceState.Success).code).isEqualTo(200)
         Truth.assertThat((userList as ResourceState.Success).body).isNotEmpty()
@@ -44,19 +41,26 @@ class UserListRepoImplTest {
     @Test
     fun `getRepositoryList Returns Github Users success list null but dont crash`()= runBlocking {
 
-        //mock
         val mockResponse = mockk<Call<ResponseData>>()
         every { mockResponse.execute() } returns MockUtil.mockResultFail()
         every { userList.getGitUserList()} returns mockResponse
-        //given
         val userList=userListRepo.getUserList()
-        //assert
         Truth.assertThat(userList).isInstanceOf(ResourceState.Success::class.java)
         Truth.assertThat((userList as ResourceState.Success).code).isEqualTo(200)
         Truth.assertThat((userList as ResourceState.Success).body).isEmpty()
     }
 
-   // TODO empty list test
+    @Test
+    fun `getRepositoryList Returns Github Users success list empty`()= runBlocking {
+
+        val mockResponse = mockk<Call<ResponseData>>()
+        every { mockResponse.execute() } returns MockUtil.mockResultFailEmptyList()
+        every { userList.getGitUserList()} returns mockResponse
+        val userList=userListRepo.getUserList()
+        Truth.assertThat(userList).isInstanceOf(ResourceState.Success::class.java)
+        Truth.assertThat((userList as ResourceState.Success).code).isEqualTo(200)
+        Truth.assertThat((userList as ResourceState.Success).body).isEmpty()
+    }
 
 
 }
