@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
+
 abstract class NetworkUseCase<R>:CoroutineScope {
 
     private var job= Job()
