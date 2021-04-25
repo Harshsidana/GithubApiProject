@@ -32,12 +32,12 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
+          username: Harsh Sidana
+          password: Pankajsi@123
           subject: Build apks for taskie 😘
           body: Build job of ${{github.repository}} completed successfully!
           to: dev.ch8n@gmail.com,harsh.sidana@gmail.com
-          from: Bakchod Engineer
+          from: harshsidanaprojects@gmail.com
           #.attachments: '**/build/reports/tests/','**/build/reports/tests/',app/build/outputs/apk/debug/**.apk
 
 
