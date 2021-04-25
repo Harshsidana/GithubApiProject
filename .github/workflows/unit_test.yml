@@ -1,0 +1,74 @@
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  running_test:
+    name: Running Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Speeding-up by Restoring Gradle Cache from Previous Builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{runner.os}}-gradle-${{hashFiles('**/*.gradle*')}}
+          restore-keys: |
+            ${{runner.os}}-gradle-
+      - name: Unit tests
+        run: bash ./gradlew test --stacktrace
+
+      - name: Upload Test Reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: '**/build/reports/tests/'
+
+      - name: Send mail 📧
+        uses: dawidd6/action-send-mail@v2.6.0
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: Build apks for taskie 😘
+          body: Build job of ${{github.repository}} completed successfully!
+          to: dev.ch8n@gmail.com,harsh.sidana@gmail.com
+          from: ${{secrets.MAIL_FROM}}
+          #attachments: '**/build/reports/tests/','**/build/reports/tests/',app/build/outputs/apk/debug/**.apk
+
+
+  lint_job:
+    name: kLint task
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Restore Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Ktlint format
+        run: bash ./gradlew ktlintFormat --stacktrace
+
+      - name: KtLint task
+        run: bash ./gradlew ktlint --stacktrace
