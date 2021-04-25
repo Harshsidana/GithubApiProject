@@ -26,15 +26,6 @@ jobs:
           key: ${{runner.os}}-gradle-${{hashFiles('**/*.gradle*')}}
           restore-keys: |
             ${{runner.os}}-gradle-
-      - name: Unit tests
-        run: bash ./gradlew test --stacktrace
-
-      - name: Upload Test Reports
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-reports
-          path: '**/build/reports/tests/'
 
       - name: Send mail 📧
         uses: dawidd6/action-send-mail@v2.6.0
