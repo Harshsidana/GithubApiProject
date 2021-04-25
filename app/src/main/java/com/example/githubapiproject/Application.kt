@@ -11,5 +11,4 @@ class Application :DaggerApplication() {
             .builder()
             .application(this)
             .build()
-
 }
