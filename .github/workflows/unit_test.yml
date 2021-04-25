@@ -38,7 +38,7 @@ jobs:
           body: Build job of ${{github.repository}} completed successfully!
           to: dev.ch8n@gmail.com,harsh.sidana@gmail.com
           from: harsh.sidana18@gmail.com
-          #attachments: '**/build/reports/tests/','**/build/reports/tests/',app/build/outputs/apk/debug/**.apk
+          #.attachments: '**/build/reports/tests/','**/build/reports/tests/',app/build/outputs/apk/debug/**.apk
 
 
   lint_job:
